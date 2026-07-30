@@ -1,0 +1,395 @@
+{
+  "info": {
+    "name": "Future Media Admin API",
+    "description": "Complete REST API collection for Future Media Admin Panel",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080" },
+    { "key": "token", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var json = pm.response.json();",
+                  "if (json.data && json.data.token) {",
+                  "  pm.collectionVariables.set('token', json.data.token);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"joel@simplyfound.com.na\",\n  \"password\": \"admin123\"\n}"
+            },
+            "url": "{{baseUrl}}/api/auth/login"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Create User",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"password\": \"password123\",\n  \"role\": \"USER\"\n}"
+            },
+            "url": "{{baseUrl}}/api/users"
+          }
+        },
+        {
+          "name": "Create Super Admin",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"Second Admin\",\n  \"email\": \"admin2@futuremedia.com\",\n  \"password\": \"admin123\",\n  \"role\": \"SUPER_ADMIN\"\n}"
+            },
+            "url": "{{baseUrl}}/api/users"
+          }
+        },
+        {
+          "name": "Get All Users",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/api/users"
+          }
+        },
+        {
+          "name": "Search Users",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/api/users/search?keyword=joel"
+          }
+        },
+        {
+          "name": "Update User",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"John Updated\",\n  \"enabled\": true\n}"
+            },
+            "url": "{{baseUrl}}/api/users/2"
+          }
+        },
+        {
+          "name": "Delete User",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/api/users/2"
+          }
+        }
+      ]
+    },
+    {
+      "name": "News",
+      "item": [
+        {
+          "name": "Create News",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "title", "value": "Breaking News Title", "type": "text" },
+                { "key": "description", "value": "Full news description here.", "type": "text" },
+                { "key": "media", "type": "file", "src": [] }
+              ]
+            },
+            "url": "{{baseUrl}}/api/news"
+          }
+        },
+        {
+          "name": "Get All News (Admin)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/api/news"
+          }
+        },
+        {
+          "name": "Get Pending News",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/api/news/pending"
+          }
+        },
+        {
+          "name": "Approve News",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/api/news/1/approve"
+          }
+        },
+        {
+          "name": "Reject News",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/api/news/1/reject"
+          }
+        },
+        {
+          "name": "Public Approved News",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/news/public"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Events",
+      "item": [
+        {
+          "name": "Create Event",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "title", "value": "Community Event", "type": "text" },
+                { "key": "description", "value": "Event description", "type": "text" },
+                { "key": "media", "type": "file", "src": [] }
+              ]
+            },
+            "url": "{{baseUrl}}/api/events"
+          }
+        },
+        {
+          "name": "Public Events",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/events/public"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Gallery",
+      "item": [
+        {
+          "name": "Upload Single Photo",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "title", "value": "Gallery Photo", "type": "text" },
+                { "key": "image", "type": "file", "src": [] }
+              ]
+            },
+            "url": "{{baseUrl}}/api/gallery/single"
+          }
+        },
+        {
+          "name": "Upload Multiple Photos",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "title", "value": "Album", "type": "text" },
+                { "key": "images", "type": "file", "src": [], "uuid": "img1" },
+                { "key": "images", "type": "file", "src": [], "uuid": "img2" }
+              ]
+            },
+            "url": "{{baseUrl}}/api/gallery/multiple"
+          }
+        },
+        {
+          "name": "Public Gallery",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/gallery/public"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Vacancies",
+      "item": [
+        {
+          "name": "Create Vacancy",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "title", "value": "Journalist Position", "type": "text" },
+                { "key": "description", "value": "We are hiring a journalist.", "type": "text" },
+                { "key": "closingDate", "value": "2026-12-31", "type": "text" },
+                { "key": "published", "value": "true", "type": "text" },
+                { "key": "media", "type": "file", "src": [] }
+              ]
+            },
+            "url": "{{baseUrl}}/api/vacancies"
+          }
+        },
+        {
+          "name": "Public Vacancies",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/vacancies/public"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Job Applications",
+      "item": [
+        {
+          "name": "Apply for Job (Public)",
+          "request": {
+            "method": "POST",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "vacancyId", "value": "1", "type": "text" },
+                { "key": "fullName", "value": "Jane Applicant", "type": "text" },
+                { "key": "email", "value": "jane@example.com", "type": "text" },
+                { "key": "phone", "value": "+264811234567", "type": "text" },
+                { "key": "location", "value": "Windhoek", "type": "text" },
+                { "key": "cv", "type": "file", "src": [] }
+              ]
+            },
+            "url": "{{baseUrl}}/api/applications/apply"
+          }
+        },
+        {
+          "name": "Get All Applications",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/api/applications"
+          }
+        },
+        {
+          "name": "Search Applicants",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/api/applications/search?keyword=jane"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Contact Us",
+      "item": [
+        {
+          "name": "Submit Contact Form (Public)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"Visitor Name\",\n  \"email\": \"visitor@example.com\",\n  \"phone\": \"+264811234567\",\n  \"subject\": \"Inquiry\",\n  \"message\": \"I would like more information about your services.\"\n}"
+            },
+            "url": "{{baseUrl}}/api/contact"
+          }
+        },
+        {
+          "name": "Get All Contact Submissions",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/api/contact"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Subscriptions",
+      "item": [
+        {
+          "name": "Subscribe (Public)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"Subscriber Name\",\n  \"email\": \"subscriber@example.com\",\n  \"language\": \"ENGLISH\"\n}"
+            },
+            "url": "{{baseUrl}}/api/subscriptions"
+          }
+        },
+        {
+          "name": "Get All Subscriptions",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/api/subscriptions"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Banners",
+      "item": [
+        {
+          "name": "Create Banner",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "title", "value": "Welcome to Future Media", "type": "text" },
+                { "key": "description", "value": "Your trusted media partner in Namibia", "type": "text" },
+                { "key": "image", "type": "file", "src": [] }
+              ]
+            },
+            "url": "{{baseUrl}}/api/banners"
+          }
+        },
+        {
+          "name": "Latest Active Banner (Public)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/banners/public/latest"
+          }
+        }
+      ]
+    }
+  ]
+}
