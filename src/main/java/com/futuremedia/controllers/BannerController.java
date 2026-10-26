@@ -61,11 +61,6 @@ public class BannerController {
         return ResponseEntity.ok(ApiResponse.ok("Banners retrieved", bannerService.getAll()));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<Banner>> getById(@PathVariable Long id) {
-        return ResponseEntity.ok(ApiResponse.ok("Banner retrieved", bannerService.getById(id)));
-    }
-
     @GetMapping("/public/latest")
     public ResponseEntity<ApiResponse<Banner>> getLatestActive() {
         return ResponseEntity.ok(ApiResponse.ok("Latest active banner retrieved", bannerService.getLatestActive()));
@@ -74,5 +69,10 @@ public class BannerController {
     @GetMapping("/public")
     public ResponseEntity<ApiResponse<List<Banner>>> getPublicBanners() {
         return ResponseEntity.ok(ApiResponse.ok("Banners retrieved", bannerService.getAll()));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ApiResponse<Banner>> getById(@PathVariable Long id) {
+        return ResponseEntity.ok(ApiResponse.ok("Banner retrieved", bannerService.getById(id)));
     }
 }

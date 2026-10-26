@@ -18,7 +18,7 @@ public class SwaggerConfig {
         return new OpenAPI()
                 .info(new Info()
                         .title("Future Media Admin Panel API")
-                        .description("REST API for Future Media Admin Panel — News, Events, Gallery, Vacancies, Contact, Subscriptions & Banners")
+                        .description("REST API for Future Media Admin Panel — News, Events, Gallery, Vacancies, Contact, Gated Documents, Media Audit, Shopbeat, Leads, Email Marketing, Subscriptions & Banners")
                         .version("1.0.0")
                         .contact(new Contact()
                                 .name("Future Media")

@@ -19,18 +19,28 @@ public class ContactUs {
     private Long id;
 
     @Column(nullable = false)
-    private String fullName;
+    private String name;
 
     @Column(nullable = false)
     private String email;
 
-    private String phone;
+    @Column(nullable = false)
+    private String telephone;
 
     @Column(nullable = false)
-    private String subject;
+    private String company;
 
-    @Column(nullable = false, columnDefinition = "TEXT")
-    private String message;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "brand_id", nullable = false)
+    private Brand brand;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "sales_id", nullable = false)
+    private SalesOption sales;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "service_id", nullable = false)
+    private ServiceOption service;
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime submittedDate;

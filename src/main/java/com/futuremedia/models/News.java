@@ -24,7 +24,7 @@ public class News {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String description;
 
-    /** Relative path to image or video — only one media type allowed */
+    /** MinIO public URL for image or video — file bytes are never stored in PostgreSQL */
     @Column(nullable = false)
     private String mediaPath;
 

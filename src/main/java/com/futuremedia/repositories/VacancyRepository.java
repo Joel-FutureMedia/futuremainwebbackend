@@ -12,4 +12,6 @@ public interface VacancyRepository extends JpaRepository<Vacancy, Long> {
     List<Vacancy> findByPublishedTrueOrderByCreatedDateDesc();
 
     List<Vacancy> findAllByOrderByCreatedDateDesc();
+
+    long countByPublishedTrue();
 }

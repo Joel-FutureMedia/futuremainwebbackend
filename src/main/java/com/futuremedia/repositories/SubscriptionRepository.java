@@ -17,4 +17,6 @@ public interface SubscriptionRepository extends JpaRepository<Subscription, Long
     List<Subscription> findByActiveTrue();
 
     List<Subscription> findAllByOrderBySubscribedDateDesc();
+
+    long countByActiveTrue();
 }

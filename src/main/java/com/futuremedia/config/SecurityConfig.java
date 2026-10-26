@@ -18,6 +18,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -45,17 +46,34 @@ public class SecurityConfig {
                         // Public auth
                         .requestMatchers("/api/auth/login").permitAll()
 
-                        // Public content
-                        .requestMatchers(HttpMethod.GET, "/api/news/public/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/events/public/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/gallery/public/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/vacancies/public/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/banners/public/**").permitAll()
+                        // Public content (exact /public plus nested /public/**)
+                        .requestMatchers(HttpMethod.GET,
+                                "/api/news/public", "/api/news/public/**",
+                                "/api/events/public", "/api/events/public/**",
+                                "/api/gallery/public", "/api/gallery/public/**",
+                                "/api/vacancies/public", "/api/vacancies/public/**",
+                                "/api/freelancers/public", "/api/freelancers/public/**",
+                                "/api/banners/public", "/api/banners/public/**"
+                        ).permitAll()
 
                         // Public forms
                         .requestMatchers(HttpMethod.POST, "/api/applications/apply").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/freelancer-applications/apply").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/contact").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/subscriptions").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/media-audit").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/shopbeat/demo").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/leads").permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/api/gated-documents/*/request", "POST")).permitAll()
+
+                        // Public dropdowns
+                        .requestMatchers(HttpMethod.GET, "/api/brands/public").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/sales/public").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/services/public").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/shopbeat/feelings/public").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/leads/sources/public").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/gated-documents/public", "/api/gated-documents/public/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/gated-documents/download/**").permitAll()
 
                         // Static uploads & swagger
                         .requestMatchers("/uploads/**").permitAll()
@@ -81,10 +99,11 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of(
+        configuration.setAllowedOriginPatterns(List.of(
                 "https://futuremedia.simplyfound.com.na",
-                "http://localhost:4321",
-                "http://127.0.0.1:4321"
+                "https://media.simplyfound.com.na",
+                "http://localhost:*",
+                "http://127.0.0.1:*"
         ));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));

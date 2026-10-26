@@ -74,11 +74,6 @@ public class VacancyController {
         return ResponseEntity.ok(ApiResponse.ok("Vacancies retrieved", vacancyService.getAllVacancies()));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<Vacancy>> getById(@PathVariable Long id) {
-        return ResponseEntity.ok(ApiResponse.ok("Vacancy retrieved", vacancyService.getById(id)));
-    }
-
     @GetMapping("/public")
     public ResponseEntity<ApiResponse<List<Vacancy>>> getPublic() {
         return ResponseEntity.ok(ApiResponse.ok("Published vacancies retrieved", vacancyService.getPublishedVacancies()));
@@ -92,5 +87,10 @@ public class VacancyController {
                     .body(ApiResponse.fail("Vacancy not found or not published"));
         }
         return ResponseEntity.ok(ApiResponse.ok("Vacancy retrieved", vacancy));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ApiResponse<Vacancy>> getById(@PathVariable Long id) {
+        return ResponseEntity.ok(ApiResponse.ok("Vacancy retrieved", vacancyService.getById(id)));
     }
 }

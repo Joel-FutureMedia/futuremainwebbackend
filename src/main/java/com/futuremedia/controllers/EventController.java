@@ -62,11 +62,6 @@ public class EventController {
         return ResponseEntity.ok(ApiResponse.ok("Events retrieved successfully", eventService.getAllEvents()));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<Event>> getEvent(@PathVariable Long id) {
-        return ResponseEntity.ok(ApiResponse.ok("Event retrieved successfully", eventService.getById(id)));
-    }
-
     @GetMapping("/public")
     public ResponseEntity<ApiResponse<List<Event>>> getPublicEvents() {
         return ResponseEntity.ok(ApiResponse.ok("Events retrieved successfully", eventService.getAllEvents()));
@@ -74,6 +69,11 @@ public class EventController {
 
     @GetMapping("/public/{id}")
     public ResponseEntity<ApiResponse<Event>> getPublicEvent(@PathVariable Long id) {
+        return ResponseEntity.ok(ApiResponse.ok("Event retrieved successfully", eventService.getById(id)));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ApiResponse<Event>> getEvent(@PathVariable Long id) {
         return ResponseEntity.ok(ApiResponse.ok("Event retrieved successfully", eventService.getById(id)));
     }
 }

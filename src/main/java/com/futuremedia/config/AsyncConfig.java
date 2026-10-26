@@ -18,15 +18,19 @@ public class AsyncConfig implements AsyncConfigurer {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         executor.setCorePoolSize(5);
         executor.setMaxPoolSize(10);
-        executor.setQueueCapacity(500);
+        executor.setQueueCapacity(2000);
         executor.setThreadNamePrefix("email-marketing-");
+        executor.setWaitForTasksToCompleteOnShutdown(true);
+        executor.setAwaitTerminationSeconds(30);
         executor.initialize();
         return executor;
     }
 
     @Override
     public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
-        return (ex, method, params) ->
-                System.err.println("Async email error in " + method.getName() + ": " + ex.getMessage());
+        return (ex, method, params) -> {
+            System.err.println("Async email error in " + method.getName() + ": " + ex.getMessage());
+            ex.printStackTrace();
+        };
     }
 }

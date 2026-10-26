@@ -70,11 +70,6 @@ public class GalleryController {
         return ResponseEntity.ok(ApiResponse.ok("Gallery retrieved successfully", galleryService.getAll()));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<Gallery>> getById(@PathVariable Long id) {
-        return ResponseEntity.ok(ApiResponse.ok("Gallery image retrieved", galleryService.getById(id)));
-    }
-
     @GetMapping("/public")
     public ResponseEntity<ApiResponse<List<Gallery>>> getPublic() {
         return ResponseEntity.ok(ApiResponse.ok("Gallery retrieved successfully", galleryService.getAll()));
@@ -82,6 +77,11 @@ public class GalleryController {
 
     @GetMapping("/public/{id}")
     public ResponseEntity<ApiResponse<Gallery>> getPublicById(@PathVariable Long id) {
+        return ResponseEntity.ok(ApiResponse.ok("Gallery image retrieved", galleryService.getById(id)));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ApiResponse<Gallery>> getById(@PathVariable Long id) {
         return ResponseEntity.ok(ApiResponse.ok("Gallery image retrieved", galleryService.getById(id)));
     }
 }

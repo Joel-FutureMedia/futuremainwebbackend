@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @AllArgsConstructor
@@ -23,17 +24,24 @@ public class JobApplication {
     private Vacancy vacancy;
 
     @Column(nullable = false)
-    private String fullName;
+    private String name;
 
     @Column(nullable = false)
-    private String email;
-
-    private String phone;
+    private String surname;
 
     @Column(nullable = false)
-    private String location;
+    private LocalDate dateOfBirth;
 
-    /** CV document path — PDF/DOC/DOCX only */
+    @Column(nullable = false)
+    private String highestQualification;
+
+    @Column(nullable = false, columnDefinition = "TEXT")
+    private String workExperience;
+
+    @Column(nullable = false)
+    private boolean namibian;
+
+    /** CV document URL in MinIO — PDF/DOC/DOCX/CSV only, never stored in PostgreSQL */
     @Column(nullable = false)
     private String cvPath;
 

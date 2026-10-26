@@ -19,13 +19,15 @@ public class ContactUsController {
     private ContactUsService contactUsService;
 
     @PostMapping
-    public ResponseEntity<ApiResponse<ContactUs>> submit(@RequestBody Map<String, String> body) {
+    public ResponseEntity<ApiResponse<ContactUs>> submit(@RequestBody Map<String, Object> body) {
         ContactUs contact = contactUsService.submitAndNotify(
-                body.get("fullName"),
-                body.get("email"),
-                body.get("phone"),
-                body.get("subject"),
-                body.get("message")
+                asString(body.get("name")),
+                asString(body.get("email")),
+                asString(body.get("telephone")),
+                asString(body.get("company")),
+                asLong(body.get("brandId")),
+                asLong(body.get("salesId")),
+                asLong(body.get("serviceId"))
         );
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ApiResponse.ok("Contact form submitted successfully. We will get back to you soon.", contact));
@@ -45,5 +47,16 @@ public class ContactUsController {
     public ResponseEntity<ApiResponse<Object>> delete(@PathVariable Long id) {
         contactUsService.delete(id);
         return ResponseEntity.ok(ApiResponse.ok("Contact submission deleted"));
+    }
+
+    private String asString(Object value) {
+        return value == null ? null : value.toString();
+    }
+
+    private Long asLong(Object value) {
+        if (value == null || value.toString().isBlank()) {
+            return null;
+        }
+        return Long.valueOf(value.toString());
     }
 }

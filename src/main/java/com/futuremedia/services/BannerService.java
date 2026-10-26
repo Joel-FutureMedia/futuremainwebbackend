@@ -73,7 +73,6 @@ public class BannerService {
     }
 
     public Banner getLatestActive() {
-        return bannerRepository.findFirstByActiveTrueOrderByUpdatedDateDesc()
-                .orElseThrow(() -> new ResourceNotFoundException("No active banner found"));
+        return bannerRepository.findFirstByActiveTrueOrderByUpdatedDateDesc().orElse(null);
     }
 }

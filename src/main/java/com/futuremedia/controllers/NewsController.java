@@ -66,9 +66,19 @@ public class NewsController {
         return ResponseEntity.ok(ApiResponse.ok("News retrieved successfully", newsService.getAllNews()));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<News>> getNews(@PathVariable Long id) {
-        return ResponseEntity.ok(ApiResponse.ok("News retrieved successfully", newsService.getById(id)));
+    @GetMapping("/public")
+    public ResponseEntity<ApiResponse<List<News>>> getApprovedNews() {
+        return ResponseEntity.ok(ApiResponse.ok("Approved news retrieved", newsService.getApprovedNews()));
+    }
+
+    @GetMapping("/public/{id}")
+    public ResponseEntity<ApiResponse<News>> getApprovedNewsById(@PathVariable Long id) {
+        News news = newsService.getById(id);
+        if (news.getApprovalStatus() != com.futuremedia.models.ApprovalStatus.APPROVED) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(ApiResponse.fail("News not found or not approved"));
+        }
+        return ResponseEntity.ok(ApiResponse.ok("News retrieved successfully", news));
     }
 
     @GetMapping("/my")
@@ -80,6 +90,11 @@ public class NewsController {
     @GetMapping("/pending")
     public ResponseEntity<ApiResponse<List<News>>> getPendingNews() {
         return ResponseEntity.ok(ApiResponse.ok("Pending news retrieved", newsService.getPendingNews()));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ApiResponse<News>> getNews(@PathVariable Long id) {
+        return ResponseEntity.ok(ApiResponse.ok("News retrieved successfully", newsService.getById(id)));
     }
 
     @PutMapping("/{id}/approve")
@@ -98,21 +113,5 @@ public class NewsController {
 
         User user = authService.getCurrentUser(authentication.getName());
         return ResponseEntity.ok(ApiResponse.ok("News rejected", newsService.rejectNews(id, user)));
-    }
-
-    // Public endpoints
-    @GetMapping("/public")
-    public ResponseEntity<ApiResponse<List<News>>> getApprovedNews() {
-        return ResponseEntity.ok(ApiResponse.ok("Approved news retrieved", newsService.getApprovedNews()));
-    }
-
-    @GetMapping("/public/{id}")
-    public ResponseEntity<ApiResponse<News>> getApprovedNewsById(@PathVariable Long id) {
-        News news = newsService.getById(id);
-        if (news.getApprovalStatus() != com.futuremedia.models.ApprovalStatus.APPROVED) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(ApiResponse.fail("News not found or not approved"));
-        }
-        return ResponseEntity.ok(ApiResponse.ok("News retrieved successfully", news));
     }
 }

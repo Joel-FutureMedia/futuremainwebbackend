@@ -16,8 +16,8 @@ public interface JobApplicationRepository extends JpaRepository<JobApplication, 
 
     List<JobApplication> findAllByOrderByAppliedDateDesc();
 
-    @Query("SELECT j FROM job_applications j WHERE LOWER(j.fullName) LIKE LOWER(CONCAT('%', :keyword, '%')) " +
-           "OR LOWER(j.email) LIKE LOWER(CONCAT('%', :keyword, '%')) " +
-           "OR LOWER(j.location) LIKE LOWER(CONCAT('%', :keyword, '%'))")
+    @Query("SELECT j FROM job_applications j WHERE LOWER(j.name) LIKE LOWER(CONCAT('%', :keyword, '%')) " +
+           "OR LOWER(j.surname) LIKE LOWER(CONCAT('%', :keyword, '%')) " +
+           "OR LOWER(j.highestQualification) LIKE LOWER(CONCAT('%', :keyword, '%'))")
     List<JobApplication> searchApplicants(@Param("keyword") String keyword);
 }

@@ -4,6 +4,7 @@ import com.futuremedia.models.ApiResponse;
 import com.futuremedia.models.JobApplication;
 import com.futuremedia.services.JobApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -22,14 +23,16 @@ public class JobApplicationController {
     @PostMapping(value = "/apply", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ApiResponse<JobApplication>> apply(
             @RequestParam Long vacancyId,
-            @RequestParam String fullName,
-            @RequestParam String email,
-            @RequestParam(required = false) String phone,
-            @RequestParam String location,
+            @RequestParam String name,
+            @RequestParam String surname,
+            @RequestParam String dateOfBirth,
+            @RequestParam String highestQualification,
+            @RequestParam String workExperience,
+            @RequestParam String namibian,
             @RequestParam("cv") MultipartFile cv) {
 
         JobApplication application = jobApplicationService.apply(
-                vacancyId, fullName, email, phone, location, cv);
+                vacancyId, name, surname, dateOfBirth, highestQualification, workExperience, namibian, cv);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ApiResponse.ok("Application submitted successfully", application));
     }
@@ -54,6 +57,11 @@ public class JobApplicationController {
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<JobApplication>> getById(@PathVariable Long id) {
         return ResponseEntity.ok(ApiResponse.ok("Application retrieved", jobApplicationService.getById(id)));
+    }
+
+    @GetMapping("/{id}/cv")
+    public ResponseEntity<InputStreamResource> downloadCv(@PathVariable Long id) {
+        return jobApplicationService.downloadCv(id);
     }
 
     @DeleteMapping("/{id}")

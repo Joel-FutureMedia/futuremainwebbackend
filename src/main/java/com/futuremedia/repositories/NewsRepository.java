@@ -16,4 +16,6 @@ public interface NewsRepository extends JpaRepository<News, Long> {
     List<News> findByCreatedByOrderByCreatedDateDesc(User createdBy);
 
     List<News> findAllByOrderByCreatedDateDesc();
+
+    long countByApprovalStatus(ApprovalStatus status);
 }
