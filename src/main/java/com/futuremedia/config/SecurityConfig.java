@@ -101,6 +101,7 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOriginPatterns(List.of(
                 "https://futuremedia.simplyfound.com.na",
+                "https://futuremediaweb.simplyfound.com.na",
                 "https://media.simplyfound.com.na",
                 "http://localhost:*",
                 "http://127.0.0.1:*"
