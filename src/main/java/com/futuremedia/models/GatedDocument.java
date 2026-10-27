@@ -26,8 +26,7 @@ public class GatedDocument {
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    /** Internal storage name only — never returned to the client website */
-    @JsonIgnore
+    /** Original upload name, shown in the admin list */
     @Column(nullable = false)
     private String originalFileName;
 
